@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+	
+<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+
+	<xs:element name="ReqPendingMsg">
+		<xs:annotation>
+			<xs:documentation>This API allows PSP to request pending messages
+				against a given mobile number or Aadhaar number.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="ReqMsg">
+					<xs:complexType>
+						<xs:attribute name="type" type="upi:reqMsgType" />
+						<xs:attribute type="xs:string" name="value" />
+						<xs:attribute type="xs:string" name="addr" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="RespPendingMsg">
+		<xs:annotation>
+			<xs:documentation>This API provides response for the above request.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Resp" type="upi:respType"/>
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="RespMsg">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PenTxn" type="upi:payTrans" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	
+</xs:schema>

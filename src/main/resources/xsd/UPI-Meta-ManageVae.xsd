@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+ 
+<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+
+	<xs:element name="ReqManageVae">
+		<xs:annotation>
+			<xs:documentation>NPCI offers a mechanism to protect customers from
+				attempts to spoof well known
+				merchants such as LIC, Indian Railways,
+				e-commerce players, telecom players,
+				bill
+				payment entities, etc. This
+				mechanism is an API, where the PSPs can manage,
+				and access
+				the common
+				collection of verified address entries. NPCI, with the help
+				of PSPs,
+				will
+				define a process to manage these entries.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="VaeList" maxOccurs="unbounded" minOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Vae" maxOccurs="unbounded" minOccurs="1">
+								<xs:complexType>
+									<xs:attribute type="upi:opType" name="op" />
+									<xs:attribute type="xs:string" name="seqNum" />
+									<xs:attribute type="xs:string" name="name" />
+									<xs:attribute type="xs:string" name="addr" />
+									<xs:attribute type="xs:string" name="logo" />
+									<xs:attribute type="xs:string" name="url" />
+									
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="RespManageVae">
+		<xs:annotation>
+			<xs:documentation>NPCI offers a mechanism to protect customers from
+				attempts to spoof well known
+				merchants such as LIC, Indian Railways,
+				e-commerce players, telecom players,
+				bill
+				payment entities, etc. This
+				mechanism is an API, where the PSPs can manage,
+				and access
+				the common
+				collection of verified address entries. NPCI, with the help
+				of PSPs,
+				will
+				define a process to manage these entries.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="Resp">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Ref" maxOccurs="unbounded" minOccurs="0" type="upi:respVaeRef" />
+						</xs:sequence>
+						<xs:attribute type="xs:string" name="reqMsgId" />
+						<xs:attribute type="upi:resultType" name="result" />
+						<xs:attribute type="xs:string" name="errCode" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+		
+</xs:schema>

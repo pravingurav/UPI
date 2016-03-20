@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+	
+	<xs:complexType name="errorMessage">
+		<xs:sequence>
+			<xs:element type="xs:string" name="errorCd" />
+			<xs:element type="xs:string" name="errorDtl" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="Ack">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="errorMessages" type="upi:errorMessage"
+					minOccurs="0" maxOccurs="unbounded">
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute type="xs:string" name="api" />
+			<xs:attribute type="xs:string" name="reqMsgId" />
+			<xs:attribute type="xs:string" name="err" />
+			<xs:attribute type="xs:string" name="ts" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

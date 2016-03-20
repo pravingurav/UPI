@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+	
+	<xs:simpleType name="identityConstant">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAN" />
+			<xs:enumeration value="BANK" />
+			<xs:enumeration value="AADHAAR" />
+			<xs:enumeration value="ACCOUNT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="whiteListedConstant">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TRUE" />
+			<xs:enumeration value="FALSE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="amountSplitConstant">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PURCHASE" />
+			<xs:enumeration value="CASHBACK" />
+			<xs:enumeration value="PARAMOUNT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="payerConstant">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PERSON" />
+			<xs:enumeration value="ENTITY" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="credDataTypeConstant">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Alphanumeric" />
+			<xs:enumeration value="Numeric" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="credLengthConstant">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="4" />
+			<xs:maxInclusive value="6" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="payConstant">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAY" />
+			<xs:enumeration value="COLLECT" />
+			<xs:enumeration value="REVERSAL" />
+			<xs:enumeration value="REFUND" />
+			<xs:enumeration value="CREDIT" />
+			<xs:enumeration value="DEBIT" />
+			<xs:enumeration value="BAL" />
+			<xs:enumeration value="ListPsp" />
+			<xs:enumeration value="ListAccPvd" />
+			<xs:enumeration value="ListKeys" />
+			<xs:enumeration value="GetToken" />
+			<xs:enumeration value="ListAccount" />
+			<xs:enumeration value="ListVae" />
+			<xs:enumeration value="ManageVae" />
+			<xs:enumeration value="ValAdd" />
+			<xs:enumeration value="SetCre" />
+			<xs:enumeration value="ReqRegMob" />
+			<xs:enumeration value="ChkTxn" />
+			<xs:enumeration value="Otp" />
+			<xs:enumeration value="BalEnq" />
+			<xs:enumeration value="Hbt" />
+			<xs:enumeration value="PendingMsg" />
+			<xs:enumeration value="TxnConfirmation" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="expireRuleConstant">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EXPIREAFTER" />
+			<xs:enumeration value="MINAMOUNT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="metaTagNameType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAYREQSTART" />
+			<xs:enumeration value="PAYREQEND" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="deviceTagNameType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MOBILE" />
+			<xs:enumeration value="GEOCODE" />
+			<xs:enumeration value="LOCATION" />
+			<xs:enumeration value="IP" />
+			<xs:enumeration value="TYPE" />
+			<xs:enumeration value="ID" />
+			<xs:enumeration value="OS" />
+			<xs:enumeration value="APP" />
+			<xs:enumeration value="CAPABILITY" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="addressType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AADHAAR" />
+			<xs:enumeration value="ACCOUNT" />
+			<xs:enumeration value="MOBILE" />
+			<xs:enumeration value="CARD" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="accountDetailType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IIN" />
+			<xs:enumeration value="UIDNUM" />
+			<xs:enumeration value="IFSC" />
+			<xs:enumeration value="ACTYPE" />
+			<xs:enumeration value="ACNUM" />
+			<xs:enumeration value="MMID" />
+			<xs:enumeration value="MOBNUM" />
+			<xs:enumeration value="ACTYPE" />
+			<xs:enumeration value="CARDNUM" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MobRegDetailsNameType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MOBILE" />
+			<xs:enumeration value="CARDDIGITS" />
+			<xs:enumeration value="EXPDATE" />
+			</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="credType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AADHAAR" />
+			<xs:enumeration value="OTP" />
+			<xs:enumeration value="PIN" />
+			<xs:enumeration value="CARD" />
+			<xs:enumeration value="PreApproved" />
+			<xs:enumeration value="Challenge" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="credSubType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IIR" />
+			<xs:enumeration value="FMR" />
+			<xs:enumeration value="FIR" />
+			<xs:enumeration value="OTP" />
+			<xs:enumeration value="SMS" />
+			<xs:enumeration value="EMAIL" />
+			<xs:enumeration value="HOTP" />
+			<xs:enumeration value="TOTP" />
+			<xs:enumeration value="MPIN" />
+			<xs:enumeration value="CVV1" />
+			<xs:enumeration value="CVV2" />
+			<xs:enumeration value="EMV" />
+			<xs:enumeration value="initial" />
+			<xs:enumeration value="reset" />
+			<xs:enumeration value="rotate" />
+			<xs:enumeration value="NA" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="resultType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SUCCESS" />
+			<xs:enumeration value="FAILURE" />
+			<xs:enumeration value="PARTIAL" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="refType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAYER" />
+			<xs:enumeration value="PAYEE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="activeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Y" />
+			<xs:enumeration value="N" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="linkType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MOBILE" />
+			<xs:enumeration value="AADHAAR" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="aebaType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="N" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="listedAccountType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SAVINGS"/>
+			<xs:enumeration value="CURRENT" />
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="opType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ADD" />
+			<xs:enumeration value="UPDATE" />
+			<xs:enumeration value="REMOVE" />
+		</xs:restriction>
+	
+	</xs:simpleType>
+	<xs:simpleType name="newCredType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PIN" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="newCredSubType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MPIN" />
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="hbtMsgType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EOD" />
+			<xs:enumeration value="ALIVE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="reqMsgType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MOBILE" />
+			<xs:enumeration value="AADHAAR" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="headType">
+		<xs:attribute type="xs:string" name="ver" use="required" />
+		<xs:attribute type="xs:string" name="ts" use="required" />
+		<xs:attribute type="xs:string" name="orgId" use="required" />
+		<xs:attribute type="xs:string" name="msgId" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="riskScoresType">
+		<xs:sequence>
+			<xs:element name="Score" maxOccurs="unbounded" minOccurs="0">
+				<xs:complexType>
+					<xs:attribute type="xs:string" name="provider" use="required" />
+					<xs:attribute type="xs:string" name="type" use="required" />
+					<xs:attribute type="xs:string" name="value" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="rulesType">
+		<xs:sequence>
+			<xs:element name="Rule" maxOccurs="unbounded" minOccurs="0">
+				<xs:complexType>
+					<xs:attribute type="upi:expireRuleConstant" name="name" use="required" />
+					<xs:attribute type="xs:string" name="value" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="amountType">
+		<xs:sequence>
+			<xs:element name="Split" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:attribute type="upi:amountSplitConstant" name="name" use="required" />
+					<xs:attribute type="xs:string" name="value" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="value" use="required" />
+		<xs:attribute type="xs:string" name="curr" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="identityType">
+		<xs:attribute type="upi:identityConstant" name="type" use="required" />
+		<xs:attribute type="xs:string" name="verifiedName" use="required" />
+		<xs:attribute type="xs:string" name="id" use="required" />
+	</xs:complexType>
+	<xs:complexType name="ratingType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute type="upi:whiteListedConstant" name="verifiedAddress"
+					use="optional" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="deviceType">
+		<xs:sequence>
+			<xs:element name="Tag" maxOccurs="unbounded" minOccurs="1">
+				<xs:complexType>
+					<xs:attribute type="upi:deviceTagNameType" name="name" use="required" />
+					<xs:attribute type="xs:string" name="value" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="accountType">
+		<xs:sequence>
+			<xs:element name="Detail" maxOccurs="unbounded" minOccurs="1">
+				<xs:complexType>
+					<xs:attribute type="upi:accountDetailType" name="name" use="required" />
+					<xs:attribute type="xs:string" name="value" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute type="upi:addressType" name="addrType" use="required" />
+	</xs:complexType>
+	<xs:complexType name="credsType">
+		<xs:sequence>
+			<xs:element name="Cred" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Data" maxOccurs="1" minOccurs="1">
+							<xs:complexType>
+								<xs:simpleContent>
+								<xs:extension base="xs:string">
+								<xs:attribute type="xs:string" name="code" />
+								<xs:attribute type="xs:string" name="ki" />
+								</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Skey" maxOccurs="1" minOccurs="0">
+							<xs:complexType>
+								<xs:simpleContent>
+								<xs:extension base="xs:string">
+								<xs:attribute type="xs:string" name="ki" />
+								</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Hmac" maxOccurs="1" minOccurs="0">
+							<xs:complexType>
+								<xs:simpleContent>
+								<xs:extension base="xs:string" />
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>						
+					</xs:sequence>
+					<xs:attribute type="upi:credType" name="type" use="required" />
+					<xs:attribute type="upi:credSubType" name="subType" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="credsAllowedType">
+		<xs:attribute type="upi:credType" name="type" use="required" />
+		<xs:attribute type="upi:credSubType" name="subType" use="required" />
+		<xs:attribute type="upi:credDataTypeConstant" name="dType" use="required"/>
+		<xs:attribute type="upi:credLengthConstant" name="dLength" use="required"/>
+	</xs:complexType>
+	<!-- 
+	<xs:complexType name="preApprovedType">
+		<xs:attribute type="xs:string" name="respCode" use="required" />
+		<xs:attribute type="xs:string" name="approvalRef" use="required" />
+	</xs:complexType>
+	 -->
+
+	<!-- <xs:complexType name="txnType">
+		<xs:sequence>
+			<xs:element name="RiskScores" type="upi:riskScoresType" />
+			<xs:element name="Rules" type="upi:rulesType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="id" />
+		<xs:attribute type="xs:string" name="note" />
+		<xs:attribute type="xs:string" name="ref" />
+		<xs:attribute type="xs:string" name="ts" />
+		<xs:attribute type="upi:payConstant" name="type" />
+	</xs:complexType> -->
+
+	<xs:complexType name="txnConfDtl">
+		<xs:sequence>
+			<xs:element name="Ref" maxOccurs="unbounded" minOccurs="0" type="upi:ref" />
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="note" />
+		<xs:attribute type="xs:string" name="orgStatus" />
+		<xs:attribute type="xs:string" name="orgErrCode" />
+		<xs:attribute type="upi:payConstant" name="type" />
+	</xs:complexType>
+
+	<xs:complexType name="payTrans">
+		<xs:sequence>
+			<xs:element name="RiskScores" type="upi:riskScoresType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Rules" type="upi:rulesType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="id"  />
+		<xs:attribute type="xs:string" name="note"  />
+		<xs:attribute type="xs:string" name="refId"  />
+		<xs:attribute type="xs:string" name="refUrl"  />
+		<xs:attribute type="xs:string" name="ts"  />
+		<xs:attribute type="upi:payConstant" name="type"  />
+		<xs:attribute type="xs:string" name="orgTxnId"  />
+		<xs:attribute type="xs:string" name="orgRespCode"  />
+		<xs:attribute type="xs:string" name="custRef" />
+	</xs:complexType>
+
+	<xs:complexType name="payeesType">
+		<xs:sequence>
+			<xs:element name="Payee" type="upi:payeeType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="payeeType">
+		<xs:sequence>
+			<xs:element name="Info" minOccurs="0" maxOccurs="1" type="upi:infoType" />
+			<xs:element name="Device" type="upi:deviceType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Ac" type="upi:accountType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Amount" type="upi:amountType" minOccurs="0" maxOccurs="1"/>					 
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="addr" />
+		<xs:attribute type="xs:string" name="name"  />
+		<xs:attribute type="xs:string" name="seqNum"  />
+		<xs:attribute type="upi:payerConstant" name="type"  />
+		<xs:attribute type="xs:string" name="code"  />
+	</xs:complexType>
+
+	<xs:complexType name="infoType">
+		<xs:sequence>
+			<xs:element name="Identity" type="upi:identityType" />
+			<xs:element name="Rating" type="upi:ratingType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="payerType">
+		<xs:sequence>
+			<xs:element name="Info" type="upi:infoType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Device" type="upi:deviceType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Ac" type="upi:accountType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Creds" type="upi:credsType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Amount" type="upi:amountType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="NewCred" type="upi:credsType" minOccurs="0" maxOccurs="1"/>
+			<!-- <xs:element name="PreApproved" type="upi:preApprovedType" minOccurs="0" maxOccurs="1" /> -->
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="addr" />
+		<xs:attribute type="xs:string" name="name" />
+		<xs:attribute type="xs:string" name="seqNum" />
+		<xs:attribute type="upi:payerConstant" name="type" />
+		<xs:attribute type="xs:string" name="code" />
+	</xs:complexType>
+	
+	<xs:complexType name="respType">
+		<xs:attribute type="xs:string" name="reqMsgId" />
+		<xs:attribute type="xs:string" name="result" />
+		<xs:attribute type="xs:string" name="errCode" />
+	</xs:complexType>
+	
+	<xs:complexType name="respTypeValAddr">
+		<xs:attribute type="xs:string" name="reqMsgId" />
+		<xs:attribute type="xs:string" name="result" />
+		<xs:attribute type="xs:string" name="errCode" />
+		<xs:attribute type="xs:string" name="maskName" />
+	</xs:complexType>
+	<xs:complexType name="ref">
+		<xs:attribute type="upi:refType" name="type" use="optional" />
+		<xs:attribute type="xs:string" name="seqNum" use="optional" />
+		<xs:attribute type="xs:string" name="addr" use="optional" />
+		<xs:attribute type="xs:string" name="settAmount" use="optional" />
+		<xs:attribute type="xs:string" name="settCurrency" use="optional" />
+		<xs:attribute type="xs:string" name="approvalNum" use="optional" />
+		<xs:attribute type="xs:string" name="respCode" use="optional" />
+		<xs:attribute type="xs:string" name="regName" use="optional" />
+	</xs:complexType>
+	<xs:complexType name="respVaeRef">
+		<xs:attribute type="upi:opType" name="op" use="optional" />
+		<xs:attribute type="xs:string" name="seqNum" use="optional" />
+		<xs:attribute type="xs:string" name="addr" use="optional" />
+		<xs:attribute type="xs:string" name="respCode" use="optional" />
+		<xs:attribute type="upi:resultType" name="result" use="optional"/>
+	</xs:complexType>	
+</xs:schema>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+ 
+<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+	
+	<xs:element name="ReqListKeys">
+		<xs:annotation>
+			<xs:documentation>NPCI maintains the list of all public keys for
+				encryption. This API allows the PSPs to
+				request for and cache the
+				list of public keys of account providers and
+				other entities in the
+				UPI eco system . Trusted and certified libraries will be used by
+				PSPs
+				for credential capture
+				and PKI public key encryption at capture
+				time. These libraries can be
+				provided by NPCI.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="Creds" type="upi:credsType" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="RespListKeys">
+		<xs:annotation>
+			<xs:documentation>NPCI maintains the list of all public keys for
+				encryption. This API allows the PSPs to
+				request for and cache the
+				list of public keys of account providers and
+				other entities in the
+				UPI eco system . Trusted and certified libraries will be used by
+				PSPs
+				for credential capture
+				and PKI public key encryption at capture
+				time. These libraries can be
+				provided by NPCI.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Resp" type="upi:respType"/>
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="keyList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="key" maxOccurs="unbounded" minOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="keyValue" maxOccurs="1" minOccurs="0" />
+									</xs:sequence>
+									<xs:attribute type="xs:string" name="code" />
+									<xs:attribute type="xs:string" name="owner" />
+									<xs:attribute type="xs:string" name="type" />
+									<xs:attribute type="xs:string" name="ki" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+</xs:schema>

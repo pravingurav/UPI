@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+	
+	<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+
+	<xs:element name="ReqPay">
+		<xs:annotation>
+			<xs:documentation>UPI ReqPay for paying from one person/entity to
+				another person/entity
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Meta">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Tag" maxOccurs="2" minOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="name" use="required"
+										type="upi:metaTagNameType" />
+									<xs:attribute type="xs:string" name="value" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="Payer" maxOccurs="1" minOccurs="1" type="upi:payerType" />
+				<xs:element name="Payees" type="upi:payeesType" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="RespPay">
+		<xs:annotation>
+			<xs:documentation>UPI ResPay for response to Pay from one person/entity
+				to another person/entity
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="Resp">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Ref" maxOccurs="unbounded" minOccurs="0" type="upi:ref" />
+							<!-- <xs:element name="Ref" maxOccurs="unbounded" minOccurs="0">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute type="upi:refType" name="type" use="optional" />
+											<xs:attribute type="xs:string" name="seqNum" use="optional" />
+											<xs:attribute type="xs:string" name="addr" use="optional" />
+											<xs:attribute type="xs:string" name="settAmount" use="optional" />
+											<xs:attribute type="xs:string" name="settCurrency" use="optional" />
+											<xs:attribute type="xs:string" name="approvalNum" use="optional" />
+											<xs:attribute type="xs:string" name="respCode" use="optional" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element> -->
+						</xs:sequence>
+						<xs:attribute type="xs:string" name="reqMsgId" />
+						<xs:attribute type="upi:resultType" name="result" />
+						<xs:attribute type="xs:string" name="errCode" />
+						<xs:attribute type="xs:string" name="approvalNum" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+</xs:schema>

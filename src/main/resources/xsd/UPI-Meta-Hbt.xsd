@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+ 
+<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+
+	<xs:element name="ReqHbt">
+		<xs:annotation>
+			<xs:documentation>This API is a mechanism for UPI system monitoring
+				(monitoring connection with PSPs
+				and sending EOD to PSPs).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="HbtMsg">
+					<xs:complexType>
+						<xs:attribute type="upi:hbtMsgType" name="type" />
+						<xs:attribute type="xs:string" name="value" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="RespHbt">
+		<xs:annotation>
+			<xs:documentation>This API is a mechanism for UPI system monitoring
+				(monitoring connection with PSPs
+				and sending EOD to PSPs).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Resp" type="upi:respType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	
+</xs:schema>

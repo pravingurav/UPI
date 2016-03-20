@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+ 
+<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+
+	<xs:element name="ReqTxnConfirmation">
+		<xs:annotation>
+			<xs:documentation>NPCI offers a mechanism to protect customers from
+				attempts to spoof well known merchants such as LIC, Indian Railways,
+				e-commerce players, telecom players, bill payment entities, etc.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="TxnConfirmation" type="upi:txnConfDtl" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="RespTxnConfirmation">
+		<xs:annotation>
+			<xs:documentation>NPCI offers a mechanism to protect customers from
+				attempts to spoof well known merchants such as LIC, Indian Railways,
+				e-commerce players, telecom players, bill payment entities, etc.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="Resp" type="upi:respType" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+</xs:schema>

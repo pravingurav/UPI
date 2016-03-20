@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+ 
+<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+	
+	
+
+	<xs:element name="ReqOtp">
+		<xs:annotation>
+			<xs:documentation>This API allows the PSPs to request for an OTP for a
+				particular customer
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="Payer" type="upi:payerType" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="RespOtp">
+		<xs:annotation>
+			<xs:documentation>This API allows the PSPs to request for an OTP for a
+				particular customer
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Resp" type="upi:respType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:upi="http://npci.org/upi/schema/" 
+ targetNamespace="http://npci.org/upi/schema/" 
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified">
+	
+<xs:include schemaLocation="UPI-Common.xsd"></xs:include>
+
+	<xs:element name="ReqSetCre">
+		<xs:annotation>
+			<xs:documentation>This API is required for providing a unified channel
+				for setting and changing MPIN across
+				various account providers. This
+				is critical to ensure customers can easily
+				set and change
+				MPIN via
+				their mobile or by going to a biometric terminal at a BC.
+				Currently
+				this API is
+				restricted to NPCI and banks to be used via USSD or bank
+				mobile/BC
+				application.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Txn" type="upi:payTrans" />
+				<xs:element name="Payer" type="upi:payerType" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="RespSetCre">
+		<xs:annotation>
+			<xs:documentation>This API is required for providing a unified channel
+				for setting and changing MPIN across
+				various account providers. This
+				is critical to ensure customers can easily
+				set and change
+				MPIN via
+				their mobile or by going to a biometric terminal at a BC.
+				Currently
+				this API is
+				restricted to NPCI and banks to be used via USSD or bank
+				mobile/BC
+				application.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Head" type="upi:headType" />
+				<xs:element name="Resp" type="upi:respType"/>
+				<xs:element name="Txn" type="upi:payTrans" />
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+</xs:schema>

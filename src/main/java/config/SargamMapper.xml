@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mappers">
+
+	<select id="getUser" parameterType="Long"
+		resultType="user">
+		SELECT
+		userId,name,email,password,mobile,lastModifiedTime,lastModifiedBy,status
+		FROM user
+		WHERE userId = #{userId};
+	</select>
+	
+	<select id="getUserByEmail" parameterType="String"
+		resultType="user">
+		SELECT
+		userId,name,email,password,mobile,lastModifiedTime,lastModifiedBy,status
+		FROM user
+		WHERE email = #{email};
+	</select>
+	
+	<select id="getAllAdminEmailIds" resultType="String">
+		SELECT u.email
+		FROM user u, roles r
+		WHERE u.userId = r.userId and r.roles = 'admin' and u.status = 'active';
+	</select>
+	
+	<select id="getAllCPEmailIds" parameterType="String" resultType="String">
+		SELECT u.email
+		FROM user u, roles r, user_content_partner cp
+		WHERE u.userId = r.userId and (r.roles = 'contentPartner' or r.roles = 'radioJockey')  and u.status = 'active'
+		and cp.userId = u.userId and cp.partner = #{contentProvider};
+	</select>
+	
+	<select id="getAllContentApproverEmailIds" resultType="String">
+		SELECT u.email
+		FROM user u, roles r
+		WHERE u.userId = r.userId and r.roles = 'contentApprover' and u.status = 'active';
+	</select>
+	
+	<select id="getSignUp" parameterType="String"
+		resultType="signup">
+		SELECT * FROM signup
+		WHERE email = #{email};
+	</select>
+	
+	<select id="getTokenByUserId" parameterType="Long" resultType="authtoken">
+		SELECT
+		*
+		FROM auth_token
+		WHERE userId = #{userId};
+	</select>
+	
+	<select id="getUserRoles" parameterType="Long" resultType="String">
+		SELECT
+		roles
+		FROM roles
+		WHERE userId = #{userId};
+	</select>
+	
+	<select id="getContentPartner" parameterType="Long" resultType="String">
+		SELECT
+		partner
+		FROM user_content_partner
+		WHERE userId = #{userId};
+	</select>
+	
+	<select id="getAuthToken" parameterType="String" resultType="authtoken">
+		SELECT
+		*
+		FROM auth_token
+		WHERE token = #{token};
+	</select>
+	
+	<select id="getContent" parameterType="Long" resultType="content">
+		SELECT
+		*
+		FROM content
+		WHERE SONGID = #{songId};
+	</select>
+	
+	<select id="getContentCountByFilter" parameterType="search_filter" resultType="Integer">
+		SELECT
+		count(*)
+		FROM content
+		WHERE STATUS = #{status}
+		<if test="contentProvider != null">
+        	and CONTENTPROVIDER = #{contentProvider}
+       	</if> 
+       	<if test="contentProvider == null and contentProviderFilter != null">
+       		and CONTENTPROVIDER = #{contentProviderFilter}
+       	</if>
+       	<if test="contentProvider == null and language != null">
+       		and LANGUAGE = #{language}
+       	</if>;
+	</select>
+	
+	<select id="getContentByFilter" parameterType="search_filter" resultType="content">
+		SELECT
+		*
+		FROM content
+		WHERE STATUS = #{status}
+		<if test="contentProvider != null">
+        	and CONTENTPROVIDER = #{contentProvider}
+       	</if> 
+       	<if test="contentProvider == null and contentProviderFilter != null">
+       		and CONTENTPROVIDER = #{contentProviderFilter}
+       	</if>
+       	<if test="contentProvider == null and language != null">
+       		and LANGUAGE = #{language}
+       	</if>
+       	ORDER BY LASTMODIFIEDON DESC
+		LIMIT #{offset}, #{limit};
+	</select>
+	
+	<select id="downloadFile" parameterType="download_filter">
+		SELECT * 
+		INTO
+		OUTFILE #{filePath} FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+		FROM
+		(
+			(SELECT "SONGID", "VERSION", "SONGNAME", "ALBUMNAME", "LANGUAGE", "STARTDATE", "ENDDATE", "LABEL", "RIGHTSBODY", "CONTENTPROVIDER", "PAYTO", "SONGRELEASEDATE", "ALBUMRELEASEDATE", "CATEGORY", "SUBCATEGORY", "SUBSUBCATEGORY", "ACTOR1", "ACTOR2", "ACTOR3", "SINGER1", "SINGER2", "SINGER3", "DIRECTOR", "PRODUCER", "BANDORSINGER", "MUSICDIRECTOR", "COMPOSER", "LYRICIST", "ARTIST", "FESTIVAL", "OCCASION", "MOOD", "ISRC", "TEMPO", "TAAL", "RAAG", "KEYWORDS", "COUNTRYOFORIGIN1", "COUNTRYOFORIGIN2", "STATEOFORIGIN", "CHANNEL", "CHURCH", "DEITYORSAINTFREE", "MUSICAL", "RELIGION", "INSTRUMENT1", "INSTRUMENT2", "INSTRUMENT3", "NAMEOFSHOW", "DESCRIPTION", "PERFORMER", "POET", "SPEAKER", "SUBJECTOFPARODY", "STATION", "PSALM", "PURPOSE", "RELATIONSHIP", "TEMPLE", "TIMEOFDAYNAME", "TOPIC", "YEAROFBROADCAST", "ADDEDON", "ADDEDBYNAME", "LASTMODIFIEDON", "LASTMODIFIEDBYNAME", "STATUS", "STATUSREASON", "CONTENTTYPE")
+			UNION ALL
+			(SELECT 
+			ifnull(SONGID ,"") AS SONGID , ifnull(VERSION ,"") AS VERSION , ifnull(SONGNAME ,"") AS SONGNAME , ifnull(ALBUMNAME ,"") AS ALBUMNAME , ifnull(LANGUAGE ,"") AS LANGUAGE , ifnull(STARTDATE ,"") AS STARTDATE , ifnull(ENDDATE ,"") AS ENDDATE , ifnull(LABEL ,"") AS LABEL , ifnull(RIGHTSBODY ,"") AS RIGHTSBODY , ifnull(CONTENTPROVIDER ,"") AS CONTENTPROVIDER , ifnull(PAYTO ,"") AS PAYTO , ifnull(SONGRELEASEDATE ,"") AS SONGRELEASEDATE , ifnull(ALBUMRELEASEDATE ,"") AS ALBUMRELEASEDATE , ifnull(CATEGORY ,"") AS CATEGORY , ifnull(SUBCATEGORY ,"") AS SUBCATEGORY , ifnull(SUBSUBCATEGORY ,"") AS SUBSUBCATEGORY , ifnull(ACTOR1 ,"") AS ACTOR1 , ifnull(ACTOR2 ,"") AS ACTOR2 , ifnull(ACTOR3 ,"") AS ACTOR3 , ifnull(SINGER1 ,"") AS SINGER1 , ifnull(SINGER2 ,"") AS SINGER2 , ifnull(SINGER3 ,"") AS SINGER3 , ifnull(DIRECTOR ,"") AS DIRECTOR , ifnull(PRODUCER ,"") AS PRODUCER , ifnull(BANDORSINGER ,"") AS BANDORSINGER , ifnull(MUSICDIRECTOR ,"") AS MUSICDIRECTOR , ifnull(COMPOSER ,"") AS COMPOSER , ifnull(LYRICIST ,"") AS LYRICIST , ifnull(ARTIST ,"") AS ARTIST , ifnull(FESTIVAL ,"") AS FESTIVAL , ifnull(OCCASION ,"") AS OCCASION , ifnull(MOOD ,"") AS MOOD , ifnull(ISRC ,"") AS ISRC , ifnull(TEMPO ,"") AS TEMPO , ifnull(TAAL ,"") AS TAAL , ifnull(RAAG ,"") AS RAAG , ifnull(KEYWORDS ,"") AS KEYWORDS , ifnull(COUNTRYOFORIGIN1 ,"") AS COUNTRYOFORIGIN1 , ifnull(COUNTRYOFORIGIN2 ,"") AS COUNTRYOFORIGIN2 , ifnull(STATEOFORIGIN ,"") AS STATEOFORIGIN , ifnull(CHANNEL ,"") AS CHANNEL , ifnull(CHURCH ,"") AS CHURCH , ifnull(DEITYORSAINTFREE ,"") AS DEITYORSAINTFREE , ifnull(MUSICAL ,"") AS MUSICAL , ifnull(RELIGION ,"") AS RELIGION , ifnull(INSTRUMENT1 ,"") AS INSTRUMENT1 , ifnull(INSTRUMENT2 ,"") AS INSTRUMENT2 , ifnull(INSTRUMENT3 ,"") AS INSTRUMENT3 , ifnull(NAMEOFSHOW ,"") AS NAMEOFSHOW , ifnull(DESCRIPTION ,"") AS DESCRIPTION , ifnull(PERFORMER ,"") AS PERFORMER , ifnull(POET ,"") AS POET , ifnull(SPEAKER ,"") AS SPEAKER , ifnull(SUBJECTOFPARODY ,"") AS SUBJECTOFPARODY , ifnull(STATION ,"") AS STATION , ifnull(PSALM ,"") AS PSALM , ifnull(PURPOSE ,"") AS PURPOSE , ifnull(RELATIONSHIP ,"") AS RELATIONSHIP , ifnull(TEMPLE ,"") AS TEMPLE , ifnull(TIMEOFDAYNAME ,"") AS TIMEOFDAYNAME , ifnull(TOPIC ,"") AS TOPIC , ifnull(YEAROFBROADCAST ,"") AS YEAROFBROADCAST , ifnull(ADDEDON ,"") AS ADDEDON , ifnull(ADDEDBYNAME ,"") AS ADDEDBYNAME , ifnull(LASTMODIFIEDON ,"") AS LASTMODIFIEDON , ifnull(LASTMODIFIEDBYNAME ,"") AS LASTMODIFIEDBYNAME , ifnull(STATUS ,"") AS STATUS , ifnull(STATUSREASON ,"") AS STATUSREASON , ifnull(CONTENTTYPE,"") AS CONTENTTYPE 
+			FROM
+			content WHERE STATUS IN 
+			<foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+		        #{item}
+			</foreach>
+			<if test="endDate != null">
+	        	and ENDDATE > (CURDATE() + INTERVAL 14 DAY)
+	       	</if>
+			<if test="contentProvider != null">
+	        	and CONTENTPROVIDER = #{contentProvider}
+	       	</if> 
+		    ) 
+	    ) abc ORDER BY LASTMODIFIEDON DESC;
+	</select>
+	
+	<select id="getSearch" parameterType="search_term" resultType="content">
+		SELECT
+		*
+		FROM content
+		WHERE (SONGNAME like #{searchTerm} OR ALBUMNAME like #{searchTerm})
+		<if test="contentProvider != null">
+        	and CONTENTPROVIDER = #{contentProvider}
+       	</if> 
+       	ORDER BY LASTMODIFIEDON DESC limit 100;
+	</select>
+	
+	<select id="getApprovalPendingUsers" resultType="signup" >
+		select u.userId as id, s.name, s.email, 
+			s.mobile as mobileNumber, s.organization, s.rolesDescription as roleDescription,
+			s.requestDateTime
+		from user u, signup s
+		where s.email = u.email
+		and u.status = 'approvalPending' 
+		order by requestDateTime desc;
+	</select>
+	
+	<select id="getDeletedUsers" resultType="signup" >
+		select u.userId as id, s.name, s.email, 
+			s.mobile as mobileNumber, s.organization, s.rolesDescription as roleDescription,
+			s.requestDateTime
+		from user u, signup s
+		where s.email = u.email
+		and u.status = 'deleted' 
+		order by requestDateTime desc;
+	</select>
+	
+	<select id="getApprovedUsersId" resultType="Long" >
+		select u.userId as id
+		from user u, roles r
+		where status = 'active' and r.roles != 'admin' and u.userId = r.userId
+		order by lastModifiedTime desc;
+	</select>
+	
+	<select id="getContentProviderList" resultType="String" >
+		select name from content_provider order by name asc;
+	</select>
+	
+	<insert id="updateUser" parameterType="user" >
+		UPDATE user
+		SET name = #{name}, mobile = #{mobile}, 
+		lastModifiedTime = NOW(), lastModifiedBy = #{userId}
+		WHERE userId = #{userId};
+	</insert>
+	
+	<insert id="insertContentPartner" parameterType="user" >
+		insert into user_content_partner
+		values(#{userId}, #{contentProvider})
+	</insert>
+	
+	<insert id="insertRole" parameterType="user" >
+		insert into roles
+		values(#{id}, #{roleDescription})
+	</insert>
+	
+	<delete id="deleteUser" parameterType="user">
+		UPDATE user
+		SET status = 'deleted', lastModifiedTime = NOW(), lastModifiedBy = #{lastModifiedBy}
+		where userId = #{userId};
+	</delete>
+	
+	<delete id="deleteRole" parameterType="user" >
+		delete from roles
+		where userId = #{userId};
+	</delete>
+	
+	<delete id="deleteContentPartner" parameterType="user" >
+		delete from user_content_partner
+		where userId = #{userId};
+	</delete>
+	
+	<delete id="deleteAuthToken" parameterType="user" >
+		delete from auth_token
+		where userId = #{userId};
+	</delete>
+	
+	<delete id="approveUser" parameterType="user">
+		UPDATE user
+		SET status = 'active', lastModifiedTime = NOW(), lastModifiedBy = #{lastModifiedBy}
+		where userId = #{userId}
+	</delete>
+	
+	<insert id="updateUserPassword" parameterType="user" >
+		UPDATE user
+		SET  password = #{password}, lastModifiedTime = NOW(), lastModifiedBy = #{userId}
+		WHERE userId = #{userId};
+	</insert>
+	
+	<insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="userId">
+		insert into user
+		(name, email, password,
+		mobile, lastModifiedTime, status)
+		values (#{name}, #{email}, #{password},
+		#{mobile}, NOW(), #{status});
+	</insert>
+	
+	<insert id="insertSignUp" parameterType="signup" useGeneratedKeys="true" keyProperty="signupid">
+		insert into signup
+		(name,
+		organization, address, email, password,
+		mobile, rolesDescription,
+		requestDateTime)
+		values (#{name},
+		#{organization}, #{address}, #{email},
+		#{password},
+		#{mobileNumber},
+		#{roleDescription}, NOW());
+	</insert>
+	
+	<insert id="insertAuthToken" parameterType="authtoken" useGeneratedKeys="true">
+		insert into auth_token
+		(userId, token, created_at)
+		values (#{userId},
+		#{token}, NOW());
+	</insert>
+	
+	<insert id="moveContentToHistory" parameterType="Long">
+		replace into content_history
+		select * from content 
+		WHERE SONGID = #{songId};
+	</insert>
+	
+	<insert id="insertContent" parameterType="content" useGeneratedKeys="true" keyProperty="SONGID" keyColumn="SONGID">
+		insert into content
+		(VERSION,SONGNAME,ALBUMNAME,LANGUAGE,MEDIACLIPPATH,STARTDATE,ENDDATE,
+		LABEL,RIGHTSBODY,CONTENTPROVIDER,PAYTO,SONGRELEASEDATE,ALBUMRELEASEDATE,
+		CATEGORY,SUBCATEGORY,SUBSUBCATEGORY,ACTOR1,ACTOR2,ACTOR3,SINGER1,SINGER2,SINGER3,
+		DIRECTOR,PRODUCER,BANDORSINGER,MUSICDIRECTOR,COMPOSER,LYRICIST,ARTIST,FESTIVAL,
+		OCCASION,MOOD,ISRC,TEMPO,TAAL,RAAG,KEYWORDS,COUNTRYOFORIGIN1,COUNTRYOFORIGIN2,
+		STATEOFORIGIN,CHANNEL,CHURCH,DEITYORSAINTFREE,MUSICAL,RELIGION,
+		INSTRUMENT1,INSTRUMENT2,INSTRUMENT3,NAMEOFSHOW,DESCRIPTION,PERFORMER,POET,SPEAKER,
+		SUBJECTOFPARODY,STATION,PSALM,PURPOSE,RELATIONSHIP,TEMPLE,TIMEOFDAYNAME,TOPIC,YEAROFBROADCAST,
+		ADDEDON,ADDEDBY,ADDEDBYNAME,LASTMODIFIEDON,LASTMODIFIEDBY,LASTMODIFIEDBYNAME,STATUS,STATUSREASON,CONTENTTYPE)
+		values (#{VERSION},#{SONGNAME},#{ALBUMNAME},#{LANGUAGE},#{MEDIACLIPPATH},#{STARTDATE},#{ENDDATE},
+		#{LABEL},#{RIGHTSBODY},#{CONTENTPROVIDER},#{PAYTO},#{SONGRELEASEDATE},#{ALBUMRELEASEDATE},
+		#{CATEGORY},#{SUBCATEGORY},#{SUBSUBCATEGORY},#{ACTOR1},#{ACTOR2},#{ACTOR3},#{SINGER1},#{SINGER2},#{SINGER3},
+		#{DIRECTOR},#{PRODUCER},#{BANDORSINGER},#{MUSICDIRECTOR},#{COMPOSER},#{LYRICIST},#{ARTIST},#{FESTIVAL},
+		#{OCCASION},#{MOOD},#{ISRC},#{TEMPO},#{TAAL},#{RAAG},#{KEYWORDS},#{COUNTRYOFORIGIN1},#{COUNTRYOFORIGIN2},
+		#{STATEOFORIGIN},#{CHANNEL},#{CHURCH},#{DEITYORSAINTFREE},#{MUSICAL},#{RELIGION},
+		#{INSTRUMENT1},#{INSTRUMENT2},#{INSTRUMENT3},#{NAMEOFSHOW},#{DESCRIPTION},#{PERFORMER},#{POET},#{SPEAKER},
+		#{SUBJECTOFPARODY},#{STATION},#{PSALM},#{PURPOSE},#{RELATIONSHIP},#{TEMPLE},#{TIMEOFDAYNAME},#{TOPIC},#{YEAROFBROADCAST},
+		NOW(),#{ADDEDBY},#{ADDEDBYNAME},NOW(),#{LASTMODIFIEDBY},#{LASTMODIFIEDBYNAME},#{STATUS},#{STATUSREASON},#{CONTENTTYPE});
+	</insert>
+	
+	<insert id="updateContent" parameterType="content">
+		REPLACE into content
+		(SONGID,VERSION,SONGNAME,ALBUMNAME,LANGUAGE,MEDIACLIPPATH,STARTDATE,ENDDATE,
+		LABEL,RIGHTSBODY,CONTENTPROVIDER,PAYTO,SONGRELEASEDATE,ALBUMRELEASEDATE,
+		CATEGORY,SUBCATEGORY,SUBSUBCATEGORY,ACTOR1,ACTOR2,ACTOR3,SINGER1,SINGER2,SINGER3,
+		DIRECTOR,PRODUCER,BANDORSINGER,MUSICDIRECTOR,COMPOSER,LYRICIST,ARTIST,FESTIVAL,
+		OCCASION,MOOD,ISRC,TEMPO,TAAL,RAAG,KEYWORDS,COUNTRYOFORIGIN1,COUNTRYOFORIGIN2,
+		STATEOFORIGIN,CHANNEL,CHURCH,DEITYORSAINTFREE,MUSICAL,RELIGION,
+		INSTRUMENT1,INSTRUMENT2,INSTRUMENT3,NAMEOFSHOW,DESCRIPTION,PERFORMER,POET,SPEAKER,
+		SUBJECTOFPARODY,STATION,PSALM,PURPOSE,RELATIONSHIP,TEMPLE,TIMEOFDAYNAME,TOPIC,YEAROFBROADCAST,
+		ADDEDON,ADDEDBY,ADDEDBYNAME,LASTMODIFIEDON,LASTMODIFIEDBY,LASTMODIFIEDBYNAME,STATUS,STATUSREASON,CONTENTTYPE)
+		values (#{SONGID}, #{VERSION},#{SONGNAME},#{ALBUMNAME},#{LANGUAGE},#{MEDIACLIPPATH},#{STARTDATE},#{ENDDATE},
+		#{LABEL},#{RIGHTSBODY},#{CONTENTPROVIDER},#{PAYTO},#{SONGRELEASEDATE},#{ALBUMRELEASEDATE},
+		#{CATEGORY},#{SUBCATEGORY},#{SUBSUBCATEGORY},#{ACTOR1},#{ACTOR2},#{ACTOR3},#{SINGER1},#{SINGER2},#{SINGER3},
+		#{DIRECTOR},#{PRODUCER},#{BANDORSINGER},#{MUSICDIRECTOR},#{COMPOSER},#{LYRICIST},#{ARTIST},#{FESTIVAL},
+		#{OCCASION},#{MOOD},#{ISRC},#{TEMPO},#{TAAL},#{RAAG},#{KEYWORDS},#{COUNTRYOFORIGIN1},#{COUNTRYOFORIGIN2},
+		#{STATEOFORIGIN},#{CHANNEL},#{CHURCH},#{DEITYORSAINTFREE},#{MUSICAL},#{RELIGION},
+		#{INSTRUMENT1},#{INSTRUMENT2},#{INSTRUMENT3},#{NAMEOFSHOW},#{DESCRIPTION},#{PERFORMER},#{POET},#{SPEAKER},
+		#{SUBJECTOFPARODY},#{STATION},#{PSALM},#{PURPOSE},#{RELATIONSHIP},#{TEMPLE},#{TIMEOFDAYNAME},#{TOPIC},#{YEAROFBROADCAST},
+		#{ADDEDON},#{ADDEDBY},#{ADDEDBYNAME},NOW(),#{LASTMODIFIEDBY},#{LASTMODIFIEDBYNAME},#{STATUS},#{STATUSREASON},#{CONTENTTYPE});
+	</insert>
+	
+	<select id="isPhysicalFilePresent" parameterType="content" resultType="boolean">
+		 select if(FILEPRESENT='Y',true,false) as isPhysicalFilePresent from metadata_backup.clip_mapping_backup where songId=#{SONGID};
+	</select>
+	
+	<select id="getBackUpFilePath" parameterType="content" resultType="String">
+		 select FILEPATH from metadata_backup.clip_mapping_backup where FILEPRESENT='Y' and  songId=#{SONGID};
+	</select>
+	
+	<select id="getDuplicateContent" parameterType="content" resultType="content">
+		SELECT
+		*
+		FROM content
+		WHERE SONGNAME = #{SONGNAME} AND ALBUMNAME = #{ALBUMNAME}
+		AND LANGUAGE = #{LANGUAGE} AND STARTDATE = #{STARTDATE}
+		AND ENDDATE = #{ENDDATE} AND LABEL = #{LABEL}
+		AND RIGHTSBODY = #{RIGHTSBODY} AND CONTENTPROVIDER = #{CONTENTPROVIDER}
+		AND PAYTO = #{PAYTO} AND SONGRELEASEDATE = #{SONGRELEASEDATE}
+		AND ALBUMRELEASEDATE = #{ALBUMRELEASEDATE} AND CATEGORY = #{CATEGORY}		
+	</select>
+	
+</mapper>
